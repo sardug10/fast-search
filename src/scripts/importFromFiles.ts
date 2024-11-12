@@ -52,14 +52,16 @@ async function processBatch(batch: any[], esClient: ESWrapper, batchNumber: numb
 }
 
 async function main() {
-  const ndjsonFilePath = "./clients.ndjson";
+  const args: string[] = process.argv;
+  const filePath = args[2].split("=")[2];
+
   const esClient = new ESWrapper({
     cloudId: process.env.ES_CLOUD_ID!,
     apiKey: process.env.ES_API_KEY!,
     index: "clients",
   });
   try {
-    await importFromFile(ndjsonFilePath, esClient);
+    await importFromFile(filePath, esClient);
   } catch (error) {
     console.error("Error during import:", error);
   }
